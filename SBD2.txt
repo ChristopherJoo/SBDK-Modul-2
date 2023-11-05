@@ -31,8 +31,8 @@ create table Transaksi(
     Metode_Pembayaran_Transaksi varchar(15),
     ID_Customer char(6),
     NIK_Pegawai char(16),
-    FOREIGN KEY (NIK_Pegawai) REFERENCES  Pegawai(NIK_Pegawai),
-    FOREIGN KEY (ID_Customer) REFERENCES  Customer(ID_Customer)
+    CONSTRAINT Transaksi_FK_NIK_Pegawai FOREIGN KEY (NIK_Pegawai) REFERENCES  Pegawai(NIK_Pegawai),
+    CONSTRAINT Transaksi_FK_ID_Customer FOREIGN KEY (ID_Customer) REFERENCES  Customer(ID_Customer)
 );
 
 CREATE TABLE Transaksi_Minuman(
@@ -69,7 +69,10 @@ ADD FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON UPDATE CASCADE
 #2.c.
 
 ALTER TABLE Transaksi
-ADD FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON UPDATE CASCADE
+DROP FOREIGN KEY Transaksi_FK_ID_Customer;
+
+ALTER TABLE Transaksi
+ADD CONSTRAINT Transaksi_FK_ID_Customer FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON UPDATE CASCADE
 ON DELETE CASCADE;
 
 #2.d.
@@ -226,6 +229,13 @@ WHERE MONTH(Tanggal_Kadaluarsa_Kartu_Membership) < 12 AND YEAR(Tanggal_Kadaluars
 DELETE FROM Membership;
 
 #11
+
+ALTER TABLE Transaksi
+DROP FOREIGN KEY Transaksi_FK_NIK_Pegawai;
+
+ALTER TABLE Transaksi
+ADD CONSTRAINT Transaksi_FK_NIK_Pegawai FOREIGN KEY (NIK_Pegawai) REFERENCES Pegawai(NIK_Pegawai) ON UPDATE CASCADE
+ON DELETE CASCADE;
 
 DELETE FROM Pegawai
 WHERE Nama_Pegawai = 'Maimunah';
